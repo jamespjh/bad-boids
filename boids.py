@@ -54,4 +54,5 @@ def animate(frame):
 anim = animation.FuncAnimation(figure, animate,
                                frames=50, interval=50)
 
-plt.show()
+if __name__ == "__main__":
+    plt.show()
