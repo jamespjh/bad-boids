@@ -12,8 +12,8 @@ def test_bad_boids_regression():
             assert_almost_equal(after_value,before_value,delta=0.01)
 	
 def test_bad_boids_initialisation():
-    xs,ys,xvs,yvs=boids.initialise_boids()
-    assert_equal(len(xs),boids.boid_count)
+    xs,ys,xvs,yvs=boids.initialise_boids(15)
+    assert_equal(len(xs),15)
     for x in xs:
         assert_less(x,50.0)
         assert_greater(x,-450)
