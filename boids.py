@@ -13,6 +13,7 @@ boid_count=50
 flock_attraction=0.01
 avoidance_radius=10
 formation_flying_radius=100
+speed_matching_strength=0.125
 
 def initialise_boids(count):
     boids_x=[random.uniform(-450,50.0) for x in range(count)]
@@ -35,8 +36,8 @@ def update_boids(boids):
                 yvs[i]=yvs[i]+(ys[i]-ys[j])
             # Try to match speed with nearby boids
             if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < formation_flying_radius**2:
-                xvs[i]=xvs[i]+(xvs[j]-xvs[i])*0.125/len(xs)
-                yvs[i]=yvs[i]+(yvs[j]-yvs[i])*0.125/len(xs)
+                xvs[i]=xvs[i]+(xvs[j]-xvs[i])*speed_matching_strength/len(xs)
+                yvs[i]=yvs[i]+(yvs[j]-yvs[i])*speed_matching_strength/len(xs)
         # Move according to velocities
         xs[i]=xs[i]+xvs[i]
         ys[i]=ys[i]+yvs[i]
