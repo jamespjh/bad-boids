@@ -11,6 +11,8 @@ import random
 
 boid_count=50
 flock_attraction=0.01
+avoidance_radius=10
+formation_flying_radius=100
 
 def initialise_boids(count):
     boids_x=[random.uniform(-450,50.0) for x in range(count)]
@@ -28,11 +30,11 @@ def update_boids(boids):
             xvs[i]=xvs[i]+(xs[j]-xs[i])*flock_attraction/len(xs)
             yvs[i]=yvs[i]+(ys[j]-ys[i])*flock_attraction/len(xs)
             # Fly away from nearby boids
-            if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 100:
+            if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < avoidance_radius**2:
                 xvs[i]=xvs[i]+(xs[i]-xs[j])
                 yvs[i]=yvs[i]+(ys[i]-ys[j])
             # Try to match speed with nearby boids
-            if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 10000:
+            if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < formation_flying_radius**2:
                 xvs[i]=xvs[i]+(xvs[j]-xvs[i])*0.125/len(xs)
                 yvs[i]=yvs[i]+(yvs[j]-yvs[i])*0.125/len(xs)
         # Move according to velocities
