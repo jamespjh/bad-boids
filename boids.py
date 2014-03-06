@@ -23,25 +23,39 @@ def initialise_boids(count):
     boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
     return boids
 
+def boid_interaction(my_x,my_y,my_xv,my_yv,his_x,his_y,his_xv,his_yv,count):
+    delta_v_x=0
+    delta_v_y=0
+
+    x_separation=his_x-my_x
+    y_separation=his_y-my_y
+    
+    # Fly towards the middle
+    delta_v_x+=x_separation*flock_attraction/count
+    delta_v_y+=y_separation*flock_attraction/count
+    
+    # Fly away from nearby boids
+    if x_separation**2 + y_separation**2 < avoidance_radius**2:
+        delta_v_x-=x_separation
+        delta_v_y-=y_separation
+    
+    # Try to match speed with nearby boids
+    if x_separation**2 + y_separation**2 < formation_flying_radius**2:
+        delta_v_x+=(his_xv-my_xv)*speed_matching_strength/count
+        delta_v_y+=(his_yv-my_yv)*speed_matching_strength/count
+    return delta_v_x,delta_v_y
+
+
 def update_boids(boids):
     xs,ys,xvs,yvs=boids
     for i in range(len(xs)):
         delta_v_x=0
         delta_v_y=0
         for j in range(len(xs)):
-            x_separation=xs[j]-xs[i]
-            y_separation=ys[j]-ys[i]
-            # Fly towards the middle
-            delta_v_x+=x_separation*flock_attraction/len(xs)
-            delta_v_y+=y_separation*flock_attraction/len(xs)
-            # Fly away from nearby boids
-            if x_separation**2 + y_separation**2 < avoidance_radius**2:
-                delta_v_x-=x_separation
-                delta_v_y-=y_separation
-            # Try to match speed with nearby boids
-            if x_separation**2 + y_separation**2 < formation_flying_radius**2:
-                delta_v_x+=(xvs[j]-xvs[i])*speed_matching_strength/len(xs)
-                delta_v_y+=(yvs[j]-yvs[i])*speed_matching_strength/len(xs)
+            interaction=boid_interaction(xs[i],ys[i],xvs[i],yvs[i],xs[j],ys[j],xvs[j],yvs[j],len(xs))
+            delta_v_x+=interaction[0]
+            delta_v_y+=interaction[1]
+        # Accelerate as stated
         xvs[i]+=delta_v_x
         yvs[i]+=delta_v_y
         # Move according to velocities
