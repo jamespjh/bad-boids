@@ -26,20 +26,24 @@ def initialise_boids(count):
 def update_boids(boids):
     xs,ys,xvs,yvs=boids
     for i in range(len(xs)):
+        delta_v_x=0
+        delta_v_y=0
         for j in range(len(xs)):
             x_separation=xs[j]-xs[i]
             y_separation=ys[j]-ys[i]
             # Fly towards the middle
-            xvs[i]=xvs[i]+x_separation*flock_attraction/len(xs)
-            yvs[i]=yvs[i]+y_separation*flock_attraction/len(xs)
+            delta_v_x+=x_separation*flock_attraction/len(xs)
+            delta_v_y+=y_separation*flock_attraction/len(xs)
             # Fly away from nearby boids
             if x_separation**2 + y_separation**2 < avoidance_radius**2:
-                xvs[i]=xvs[i]-x_separation
-                yvs[i]=yvs[i]-y_separation
+                delta_v_x-=x_separation
+                delta_v_y-=y_separation
             # Try to match speed with nearby boids
             if x_separation**2 + y_separation**2 < formation_flying_radius**2:
-                xvs[i]=xvs[i]+(xvs[j]-xvs[i])*speed_matching_strength/len(xs)
-                yvs[i]=yvs[i]+(yvs[j]-yvs[i])*speed_matching_strength/len(xs)
+                delta_v_x+=(xvs[j]-xvs[i])*speed_matching_strength/len(xs)
+                delta_v_y+=(yvs[j]-yvs[i])*speed_matching_strength/len(xs)
+        xvs[i]+=delta_v_x
+        yvs[i]+=delta_v_y
         # Move according to velocities
         xs[i]=xs[i]+xvs[i]
         ys[i]=ys[i]+yvs[i]
