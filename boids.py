@@ -5,6 +5,13 @@ for use as an exercise on refactoring.
 
 import random
 
+class Boid(object):
+    def __init__(self,x,y,xv,yv):
+        self.x=x
+        self.y=y
+        self.xv=xv
+        self.yv=yv
+
 # Deliberately terrible code for teaching purposes
 class Boids(object):
     def __init__(self,
@@ -18,13 +25,13 @@ class Boids(object):
 
 
     def initialise_random(self):
-        self.xs=[random.uniform(-450,50.0) for x in range(self.count)]
-        self.ys=[random.uniform(300.0,600.0) for x in range(self.count)]
-        self.xvs=[random.uniform(0,10.0) for x in range(self.count)]
-        self.yvs=[random.uniform(-20.0,20.0) for x in range(self.count)]
+        self.boids=[Boid(random.uniform(-450,50.0),
+                random.uniform(300.0,600.0),
+                random.uniform(0,10.0),
+                random.uniform(-20.0,20.0)) for i in range(self.count)]
 
     def initialise_from_data(self,data):
-        self.xs,self.ys,self.xvs,self.yvs=data
+        self.boids=[Boid(x,y,xv,yv) for x,y,xv,yv in zip(*data)]
 
     def boid_interaction(self,my_x,my_y,my_xv,my_yv,his_x,his_y,his_xv,his_yv):
         delta_v_x=0
@@ -50,20 +57,20 @@ class Boids(object):
         return delta_v_x,delta_v_y
 
     def update(self):
-        for i in range(self.count):
+        for me in self.boids:
             delta_v_x=0
             delta_v_y=0
-            for j in range(self.count):
-                interaction=self.boid_interaction(self.xs[i],self.ys[i],self.xvs[i],
-                        self.yvs[i],self.xs[j],self.ys[j],self.xvs[j],self.yvs[j])
+            for him in self.boids:
+                interaction=self.boid_interaction(me.x,me.y,me.xv,me.yv,
+                       him.x,him.y,him.xv,him.yv)
                 delta_v_x+=interaction[0]
                 delta_v_y+=interaction[1]
             # Accelerate as stated
-            self.xvs[i]+=delta_v_x
-            self.yvs[i]+=delta_v_y
+            me.xv+=delta_v_x
+            me.yv+=delta_v_y
             # Move according to velocities
-            self.xs[i]+=self.xvs[i]
-            self.ys[i]+=self.yvs[i]
+            me.x+=me.xv
+            me.y+=me.yv
 
 
 

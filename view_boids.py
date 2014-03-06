@@ -14,11 +14,11 @@ boids.initialise_random()
 
 figure=plt.figure()
 axes=plt.axes(xlim=(-500,1500), ylim=(-500,1500))
-scatter=axes.scatter(boids.xs,boids.ys)
+scatter=axes.scatter([b.x for b in boids.boids],[b.y for b in boids.boids])
 
 def animate(frame):
     boids.update()
-    scatter.set_offsets(zip(boids.xs,boids.ys))
+    scatter.set_offsets([(b.x,b.y) for b in boids.boids])
 
 
 anim = animation.FuncAnimation(figure, animate,

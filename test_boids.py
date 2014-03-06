@@ -8,24 +8,23 @@ def test_bad_boids_regression():
     regression_data=yaml.load(open(os.path.join(os.path.dirname(__file__),'fixture.yml')))
     boids.initialise_from_data(regression_data["before"])
     boids.update()
-    current_data=(boids.xs,boids.ys,boids.xvs,boids.yvs)
-    for after,before in zip(regression_data["after"],current_data):
-        for after_value,before_value in zip(after,before): 
-            assert_almost_equal(after_value,before_value,delta=0.01)
+    for index,boid in enumerate(boids.boids):
+        assert_almost_equal(boid.x,regression_data["after"][0][index],delta=0.01)
+        assert_almost_equal(boid.y,regression_data["after"][1][index],delta=0.01)
+        assert_almost_equal(boid.xv,regression_data["after"][2][index],delta=0.01)
+        assert_almost_equal(boid.yv,regression_data["after"][3][index],delta=0.01)
+
 	
 def test_bad_boids_initialisation():
     boids=bd.Boids(15,1.0,10.0,100.0,0.5)
     boids.initialise_random()
-    assert_equal(len(boids.xs),15)
-    for x in boids.xs:
-        assert_less(x,50.0)
-        assert_greater(x,-450)
-    for y in boids.ys:
-        assert_less(y,600)
-        assert_greater(y,300)
-    for xv in boids.xvs:
-        assert_less(xv,10.0)
-        assert_greater(xv,0)
-    for yv in boids.yvs:
-        assert_less(yv,20.0)
-        assert_greater(yv,-20.0)
+    assert_equal(len(boids.boids),15)
+    for boid in boids.boids:
+        assert_less(boid.x,50.0)
+        assert_greater(boid.x,-450)
+        assert_less(boid.y,600)
+        assert_greater(boid.y,300)
+        assert_less(boid.xv,10.0)
+        assert_greater(boid.xv,0)
+        assert_less(boid.yv,20.0)
+        assert_greater(boid.yv,-20.0)
