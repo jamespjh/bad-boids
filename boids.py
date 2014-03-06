@@ -10,6 +10,7 @@ import random
 # Deliberately terrible code for teaching purposes
 
 boid_count=50
+flock_attraction=0.01
 
 def initialise_boids(count):
     boids_x=[random.uniform(-450,50.0) for x in range(count)]
@@ -24,8 +25,8 @@ def update_boids(boids):
     for i in range(len(xs)):
         for j in range(len(xs)):
             # Fly towards the middle
-            xvs[i]=xvs[i]+(xs[j]-xs[i])*0.01/len(xs)
-            yvs[i]=yvs[i]+(ys[j]-ys[i])*0.01/len(xs)
+            xvs[i]=xvs[i]+(xs[j]-xs[i])*flock_attraction/len(xs)
+            yvs[i]=yvs[i]+(ys[j]-ys[i])*flock_attraction/len(xs)
             # Fly away from nearby boids
             if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 100:
                 xvs[i]=xvs[i]+(xs[i]-xs[j])
