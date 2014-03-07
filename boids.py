@@ -34,20 +34,19 @@ class Boid(object):
 # Deliberately terrible code for teaching purposes
 class Boids(object):
     def __init__(self,
-            boid_count,flock_attraction,avoidance_radius,
+           flock_attraction,avoidance_radius,
             formation_flying_radius,speed_matching_strength):
-        self.count=boid_count
         self.flock_attraction=flock_attraction
         self.avoidance_radius=avoidance_radius
         self.formation_flying_radius=formation_flying_radius
         self.speed_matching_strength=speed_matching_strength
 
 
-    def initialise_random(self):
+    def initialise_random(self,count):
         self.boids=[Boid(random.uniform(-450,50.0),
                 random.uniform(300.0,600.0),
                 random.uniform(0,10.0),
-                random.uniform(-20.0,20.0),self) for i in range(self.count)]
+                random.uniform(-20.0,20.0),self) for i in range(count)]
 
     def initialise_from_data(self,data):
         self.boids=[Boid(x,y,xv,yv,self) for x,y,xv,yv in zip(*data)]
