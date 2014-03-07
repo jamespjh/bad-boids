@@ -35,3 +35,12 @@ def test_boid_interaction_fly_to_middle():
     first=bd.Boid(0,0,1,0,boids)
     second=bd.Boid(0,5,0,0,boids)
     assert_sequence_equal(first.interaction(second),[0.0,15.0])
+
+def test_boid_interaction_avoidance():
+    boids=bd.Boids(2,3.0,10.0,10,0)
+    first=bd.Boid(0,0,1,0,boids)
+    second=bd.Boid(0,5,0,0,boids)
+    assert_sequence_equal(first.interaction(second),[0.0,10.0])
+
+
+
