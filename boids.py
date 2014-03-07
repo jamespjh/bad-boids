@@ -34,6 +34,8 @@ class Boid(object):
             delta_v_x+=(other.xv-self.xv)*self.owner.speed_matching_strength
             delta_v_y+=(other.yv-self.yv)*self.owner.speed_matching_strength
 
+        print delta_v_y
+
         return delta_v_x,delta_v_y
 
 

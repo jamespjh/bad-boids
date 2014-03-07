@@ -1,5 +1,6 @@
 import boids as bd
-from nose.tools import assert_almost_equal, assert_greater, assert_less, assert_equal
+from nose.tools import assert_almost_equal, assert_greater
+from nose.tools import assert_less, assert_equal, assert_sequence_equal
 import os
 import yaml
 
@@ -28,3 +29,9 @@ def test_bad_boids_initialisation():
         assert_greater(boid.xv,0)
         assert_less(boid.yv,20.0)
         assert_greater(boid.yv,-20.0)
+
+def test_boid_interaction_fly_to_middle():
+    boids=bd.Boids(2,3.0,2.0,10,0)
+    first=bd.Boid(0,0,1,0,boids)
+    second=bd.Boid(0,5,0,0,boids)
+    assert_sequence_equal(first.interaction(second),[0.0,15.0])
