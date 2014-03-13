@@ -52,6 +52,7 @@ class Boids(object):
            flock_attraction,avoidance_radius,
             formation_flying_radius,speed_matching_strength,
             eagle_avoidance_radius=100, eagle_fear=5000, eagle_hunt_strength=0.00005,
+            max_speed=30.0,
             bounds=None):
         self.flock_attraction=flock_attraction
         self.avoidance_radius=avoidance_radius
@@ -61,6 +62,7 @@ class Boids(object):
         self.eagle_fear=eagle_fear
         self.eagle_hunt_strength=eagle_hunt_strength
         self.bounds=bounds
+        self.max_speed=max_speed
 
 
     def initialise_random(self,count):
@@ -91,6 +93,10 @@ class Boids(object):
             # Accelerate as stated
             me.velocity+=delta_v
             # Move according to velocities
+
+            if me.velocity.dot(me.velocity)>=self.max_speed**2:
+                me.velocity=self.max_speed*me.velocity/(me.velocity.dot(me.velocity)**0.5)
+
             me.position+=me.velocity
 
             if self.bounds:
