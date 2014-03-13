@@ -3,10 +3,11 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 
 boids=Boids(
-        flock_attraction=0.01/50,
+        flock_attraction=0.02/50,
         avoidance_radius=10,
         formation_flying_radius=100,
-        speed_matching_strength=0.125/50
+        speed_matching_strength=0.125/50,
+        bounds=(-2000,-500,1500,4000)
     )
 
 boids.initialise_random(50)
