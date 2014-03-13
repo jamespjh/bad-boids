@@ -75,6 +75,8 @@ class Boids(object):
         for me in self.boids:
             delta_v=array([0.0,0.0])
             for him in self.boids:
+                if me is him:
+                    continue
                 delta_v+=me.interaction(him)
             # Accelerate as stated
             me.velocity+=delta_v
